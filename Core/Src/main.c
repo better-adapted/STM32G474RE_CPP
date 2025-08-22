@@ -68,6 +68,18 @@ static void MX_ADC1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+uint16_t samples[1536] = {};
+int sample_index = 0;
+
+void ccd_clock_pulses(int pNum)
+{
+	for(int x=0;x<pNum;x++)
+	{
+		HAL_GPIO_WritePin(GPIOA, GPIO_CCD_CLK_Pin, GPIO_PIN_SET);
+		HAL_GPIO_WritePin(GPIOA, GPIO_CCD_CLK_Pin, GPIO_PIN_RESET);
+	}
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -152,6 +164,18 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+    HAL_GPIO_WritePin(GPIOA, GPIO_CCD_ST_Pin, GPIO_PIN_SET);
+
+    ccd_clock_pulses(16);
+
+    HAL_GPIO_WritePin(GPIOA, GPIO_CCD_ST_Pin, GPIO_PIN_RESET);
+
+    ccd_clock_pulses(12);
+
+    ccd_clock_pulses(1536);
+
+    ccd_clock_pulses(16);
   }
   /* USER CODE END 3 */
 }
@@ -246,7 +270,9 @@ static void MX_ADC1_Init(void)
 
   /** Configure the ADC multi-mode
   */
-  multimode.Mode = ADC_MODE_INDEPENDENT;
+  multimode.Mode = ADC_DUALMODE_REGSIMULT;
+  multimode.DMAAccessMode = ADC_DMAACCESSMODE_DISABLED;
+  multimode.TwoSamplingDelay = ADC_TWOSAMPLINGDELAY_1CYCLE;
   if (HAL_ADCEx_MultiModeConfigChannel(&hadc1, &multimode) != HAL_OK)
   {
     Error_Handler();
@@ -292,7 +318,7 @@ static void MX_ADC2_Init(void)
   */
   hadc2.Instance = ADC2;
   hadc2.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
-  hadc2.Init.Resolution = ADC_RESOLUTION_12B;
+  hadc2.Init.Resolution = ADC_RESOLUTION_10B;
   hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc2.Init.GainCompensation = 0;
   hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
@@ -301,8 +327,6 @@ static void MX_ADC2_Init(void)
   hadc2.Init.ContinuousConvMode = DISABLE;
   hadc2.Init.NbrOfConversion = 1;
   hadc2.Init.DiscontinuousConvMode = DISABLE;
-  hadc2.Init.ExternalTrigConv = ADC_EXTERNALTRIG_T1_TRGO;
-  hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_RISING;
   hadc2.Init.DMAContinuousRequests = DISABLE;
   hadc2.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   hadc2.Init.OversamplingMode = DISABLE;
