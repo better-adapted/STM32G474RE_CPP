@@ -76,8 +76,6 @@ void Error_Handler(void);
 #define GPIO_MUX_1_GPIO_Port GPIOB
 #define GPIO_MUX_2_Pin GPIO_PIN_2
 #define GPIO_MUX_2_GPIO_Port GPIOB
-#define GPIO_CCD_ST_Pin GPIO_PIN_9
-#define GPIO_CCD_ST_GPIO_Port GPIOA
 #define T_SWDIO_Pin GPIO_PIN_13
 #define T_SWDIO_GPIO_Port GPIOA
 #define T_SWCLK_Pin GPIO_PIN_14
