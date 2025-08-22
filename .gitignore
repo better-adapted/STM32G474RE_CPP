@@ -4,3 +4,4 @@
 *.cyclo
 *.mk
 *.list
+*.map

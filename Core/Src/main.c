@@ -70,13 +70,76 @@ static void MX_ADC1_Init(void);
 
 uint16_t samples[1536] = {};
 int sample_index = 0;
+int mux_count =0;
+
+inline void mux_test(int pMux)
+{
+}
 
 void ccd_clock_pulses(int pNum)
 {
 	for(int x=0;x<pNum;x++)
 	{
-		HAL_GPIO_WritePin(GPIOA, GPIO_CCD_CLK_Pin, GPIO_PIN_SET);
-		HAL_GPIO_WritePin(GPIOA, GPIO_CCD_CLK_Pin, GPIO_PIN_RESET);
+//		HAL_GPIO_WritePin(GPIOA, GPIO_CCD_CLK_Pin, GPIO_PIN_SET);
+//		HAL_GPIO_WritePin(GPIOA, GPIO_CCD_CLK_Pin, GPIO_PIN_RESET);
+
+		//GPIOB->BRR = GPIO_MUX_0_Pin|GPIO_MUX_1_Pin|GPIO_MUX_2_Pin;
+
+		GPIOB->ODR = (GPIOB->ODR & 0xFFFFFFF8) | mux_count;
+
+		GPIOA->BSRR = GPIO_CCD_CLK_Pin;
+
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+		asm("nop");
+
+		GPIOA->BRR = GPIO_CCD_CLK_Pin;
+
+		mux_count++;
 	}
 }
 
@@ -270,9 +333,7 @@ static void MX_ADC1_Init(void)
 
   /** Configure the ADC multi-mode
   */
-  multimode.Mode = ADC_DUALMODE_REGSIMULT;
-  multimode.DMAAccessMode = ADC_DMAACCESSMODE_DISABLED;
-  multimode.TwoSamplingDelay = ADC_TWOSAMPLINGDELAY_1CYCLE;
+  multimode.Mode = ADC_MODE_INDEPENDENT;
   if (HAL_ADCEx_MultiModeConfigChannel(&hadc1, &multimode) != HAL_OK)
   {
     Error_Handler();
@@ -327,6 +388,8 @@ static void MX_ADC2_Init(void)
   hadc2.Init.ContinuousConvMode = DISABLE;
   hadc2.Init.NbrOfConversion = 1;
   hadc2.Init.DiscontinuousConvMode = DISABLE;
+  hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc2.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc2.Init.DMAContinuousRequests = DISABLE;
   hadc2.Init.Overrun = ADC_OVR_DATA_PRESERVED;
   hadc2.Init.OversamplingMode = DISABLE;
@@ -439,7 +502,17 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_MUX_0_Pin|GPIO_MUX_1_Pin|GPIO_MUX_2_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_CCD_CLK_Pin|GPIO_CCD_ST_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : GPIO_MUX_0_Pin GPIO_MUX_1_Pin GPIO_MUX_2_Pin */
+  GPIO_InitStruct.Pin = GPIO_MUX_0_Pin|GPIO_MUX_1_Pin|GPIO_MUX_2_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : GPIO_CCD_CLK_Pin GPIO_CCD_ST_Pin */
   GPIO_InitStruct.Pin = GPIO_CCD_CLK_Pin|GPIO_CCD_ST_Pin;
