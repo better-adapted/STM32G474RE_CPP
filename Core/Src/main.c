@@ -65,7 +65,9 @@ static void MX_ADC1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-uint16_t samples[1536] = {};
+uint16_t ADC_Results[100] = {};
+int ADC_Results_Transfer_Count = 100;
+
 int sample_index = 0;
 int mux_count =0;
 
@@ -215,6 +217,8 @@ int main(void)
   }
   __HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_2, 52);
 
+  HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADC_Results, ADC_Results_Transfer_Count);
+
   /* USER CODE END BSP */
 
   /* Infinite loop */
@@ -321,7 +325,7 @@ static void MX_ADC1_Init(void)
   */
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
-  hadc1.Init.Resolution = ADC_RESOLUTION_10B;
+  hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc1.Init.GainCompensation = 0;
   hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
@@ -466,9 +470,6 @@ static void MX_DMA_Init(void)
   /* DMA1_Channel1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
-  /* DMAMUX_OVR_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMAMUX_OVR_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(DMAMUX_OVR_IRQn);
 
 }
 
