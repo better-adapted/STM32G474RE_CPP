@@ -30,7 +30,6 @@ extern "C" {
 #include "stm32g4xx_hal.h"
 
 #include "stm32g4xx_nucleo.h"
-#include <stdio.h>
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -52,8 +51,6 @@ extern "C" {
 
 /* USER CODE END EM */
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -62,26 +59,40 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define RCC_OSC32_IN_Pin GPIO_PIN_14
-#define RCC_OSC32_IN_GPIO_Port GPIOC
-#define RCC_OSC32_OUT_Pin GPIO_PIN_15
-#define RCC_OSC32_OUT_GPIO_Port GPIOC
-#define RCC_OSC_IN_Pin GPIO_PIN_0
-#define RCC_OSC_IN_GPIO_Port GPIOF
-#define RCC_OSC_OUT_Pin GPIO_PIN_1
-#define RCC_OSC_OUT_GPIO_Port GPIOF
-#define GPIO_MUX_0_Pin GPIO_PIN_0
-#define GPIO_MUX_0_GPIO_Port GPIOB
-#define GPIO_MUX_1_Pin GPIO_PIN_1
-#define GPIO_MUX_1_GPIO_Port GPIOB
-#define GPIO_MUX_2_Pin GPIO_PIN_2
-#define GPIO_MUX_2_GPIO_Port GPIOB
+#define LASER_0_TTL_Pin GPIO_PIN_14
+#define LASER_0_TTL_GPIO_Port GPIOC
+#define LASER_1_TTL_Pin GPIO_PIN_15
+#define LASER_1_TTL_GPIO_Port GPIOC
+#define LASER_2_TTL_Pin GPIO_PIN_3
+#define LASER_2_TTL_GPIO_Port GPIOC
+#define LASER_3_TTL_Pin GPIO_PIN_0
+#define LASER_3_TTL_GPIO_Port GPIOA
+#define LASER_4_TTL_Pin GPIO_PIN_5
+#define LASER_4_TTL_GPIO_Port GPIOA
+#define LASER_5_TTL_Pin GPIO_PIN_6
+#define LASER_5_TTL_GPIO_Port GPIOA
+#define LASER_6_TTL_Pin GPIO_PIN_7
+#define LASER_6_TTL_GPIO_Port GPIOA
+#define LASER_7_TTL_Pin GPIO_PIN_4
+#define LASER_7_TTL_GPIO_Port GPIOC
+#define DIL_SWT_0_Pin GPIO_PIN_5
+#define DIL_SWT_0_GPIO_Port GPIOC
+#define DIL_SWT_1_Pin GPIO_PIN_0
+#define DIL_SWT_1_GPIO_Port GPIOB
+#define DIL_SWT_2_Pin GPIO_PIN_2
+#define DIL_SWT_2_GPIO_Port GPIOB
+#define DIL_SWT_3_Pin GPIO_PIN_10
+#define DIL_SWT_3_GPIO_Port GPIOB
+#define SENSORS_CLK_Pin GPIO_PIN_9
+#define SENSORS_CLK_GPIO_Port GPIOA
+#define SENSORS_ST_Pin GPIO_PIN_10
+#define SENSORS_ST_GPIO_Port GPIOA
 #define T_SWDIO_Pin GPIO_PIN_13
 #define T_SWDIO_GPIO_Port GPIOA
 #define T_SWCLK_Pin GPIO_PIN_14
 #define T_SWCLK_GPIO_Port GPIOA
-#define T_SWO_Pin GPIO_PIN_3
-#define T_SWO_GPIO_Port GPIOB
+#define CPU_BOOT0_Pin GPIO_PIN_8
+#define CPU_BOOT0_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
